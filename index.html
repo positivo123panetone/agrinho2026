@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agro Sustentável | Futuro do Campo Brasileiro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; }
+    .hero-bg {
+      background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1625246333192-9e0c1f3b8e8b');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Cabeçalho -->
+  <header class="bg-green-700 text-white sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-leaf text-3xl"></i>
+        <h1 class="text-2xl font-bold">Agro Sustentável</h1>
+      </div>
+      <nav class="hidden md:flex gap-8 text-lg">
+        <a href="#producao" class="hover:text-green-200 transition">Produção</a>
+        <a href="#sustentabilidade" class="hover:text-green-200 transition">Ecologia</a>
+        <a href="#tecnologia" class="hover:text-green-200 transition">Tecnologia</a>
+        <a href="#contato" class="hover:text-green-200 transition">Contato</a>
+      </nav>
+      <button class="bg-white text-green-700 px-5 py-2 rounded-full font-semibold hover:bg-green-100 transition">
+        Saiba Mais
+      </button>
+    </div>
+  </header>
+
+  <!-- Banner Principal -->
+  <section class="hero-bg h-screen flex items-center text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+        Agro forte,<br>futuro sustentável
+      </h2>
+      <p class="text-2xl mb-8">Equilíbrio entre produção e meio ambiente</p>
+      <a href="#producao" class="inline-block bg-green-600 hover:bg-green-500 px-10 py-4 rounded-full text-lg font-semibold transition">
+        Conheça o Projeto
+      </a>
+    </div>
+  </section>
+
+  <!-- Introdução -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6 text-green-700">O Agronegócio Brasileiro</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Um dos principais pilares da economia brasileira, atuando como motor de desenvolvimento nacional e grande fornecedor global de alimentos.
+      </p>
+      <div class="mt-8 text-3xl font-bold text-green-600">
+        US$ 159,09 bilhões em exportações em 2022
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 1: Produção Agrícola -->
+  <section id="producao" class="py-20 bg-green-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Produção Agrícola</h2>
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h3 class="text-3xl font-semibold mb-6">Safra Recorde</h3>
+          <p class="text-lg leading-relaxed text-gray-700">
+            Estimada em <span class="font-bold text-green-700">358 milhões de toneladas</span>, 
+            o agronegócio continua sendo o carro-chefe da economia brasileira.
+          </p>
+          <ul class="mt-8 space-y-4 text-lg">
+            <li><i class="fas fa-check text-green-600 mr-3"></i> Soja, milho e carnes como principais produtos de exportação</li>
+            <li><i class="fas fa-check text-green-600 mr-3"></i> Forte presença da agricultura familiar</li>
+            <li><i class="fas fa-check text-green-600 mr-3"></i> Geração de empregos e desenvolvimento regional</li>
+          </ul>
+        </div>
+        <div class="bg-white p-8 rounded-2xl shadow-xl">
+          <img src="https://images.unsplash.com/photo-1592982537447-6f2a6a0c7c0f" 
+               alt="Campo de soja" class="rounded-xl w-full">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 2: Sustentabilidade -->
+  <section id="sustentabilidade" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Sustentabilidade no Campo</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-green-50 p-8 rounded-2xl">
+          <h3 class="text-2xl font-semibold mb-4">Agricultura de Precisão</h3>
+          <p class="text-gray-600">Uso de tecnologias para otimizar o manejo e reduzir desperdícios.</p>
+        </div>
+        <div class="bg-green-50 p-8 rounded-2xl">
+          <h3 class="text-2xl font-semibold mb-4">Energia Renovável</h3>
+          <p class="text-gray-600">Produção de biodiesel e etanol como fontes de energia limpa.</p>
+        </div>
+        <div class="bg-green-50 p-8 rounded-2xl">
+          <h3 class="text-2xl font-semibold mb-4">Biotecnologia</h3>
+          <p class="text-gray-600">Bioinsumos e aprimoramento genético para maior produtividade sem expandir áreas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3: Desafios -->
+  <section class="py-20 bg-red-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12 text-red-700">Desafios Ambientais</h2>
+      <div class="grid md:grid-cols-2 gap-10">
+        <div>
+          <h3 class="text-2xl font-semibold mb-6">Principais Desafios</h3>
+          <ul class="space-y-4">
+            <li class="flex gap-4"><span class="text-red-600 font-bold">•</span> Pressões climáticas e mudanças no padrão de chuvas</li>
+            <li class="flex gap-4"><span class="text-red-600 font-bold">•</span> Manejo de pragas (ex: nematoides)</li>
+            <li class="flex gap-4"><span class="text-red-600 font-bold">•</span> Perdas na produção</li>
+          </ul>
+        </div>
+        <div class="bg-white p-8 rounded-2xl shadow">
+          <p class="text-lg italic">"O grande desafio é produzir mais com menos impacto ambiental."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 4: Soluções e Futuro -->
+  <section id="tecnologia" class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Soluções e Futuro</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <i class="fas fa-robot text-5xl text-green-600 mb-4"></i>
+          <h3 class="text-xl font-semibold">Máquinas Inteligentes</h3>
+        </div>
+        <div class="text-center">
+          <i class="fas fa-seedling text-5xl text-green-600 mb-4"></i>
+          <h3 class="text-xl font-semibold">Agricultura Regenerativa</h3>
+        </div>
+        <div class="text-center">
+          <i class="fas fa-users text-5xl text-green-600 mb-4"></i>
+          <h3 class="text-xl font-semibold">Assistência Técnica</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 5: Conscientização -->
+  <section class="py-20 bg-green-700 text-white">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-8">Formação Profissional</h2>
+      <p class="text-2xl mb-10">Curso Técnico em Agronegócio</p>
+      <p class="max-w-2xl mx-auto text-lg">
+        Capacitar profissionais para um campo mais eficiente, consciente e sustentável.
+      </p>
+      <button class="mt-10 bg-white text-green-700 px-10 py-4 rounded-full text-lg font-semibold hover:bg-green-100 transition">
+        Conheça o Curso
+      </button>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="bg-gray-900 text-gray-300 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white text-xl font-bold mb-4">Agro Sustentável</h3>
+          <p class="text-sm">Equilíbrio entre produção e preservação ambiental.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3">Links Rápidos</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white">Produção</a></li>
+            <li><a href="#" class="hover:text-white">Sustentabilidade</a></li>
+            <li><a href="#" class="hover:text-white">Tecnologias</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3">Contato</h4>
+          <p class="text-sm">Curitiba, Paraná</p>
+          <p class="text-sm">agro.sustentavel@email.com</p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3">Redes Sociais</h4>
+          <div class="flex gap-4 text-2xl">
+            <i class="fab fa-instagram hover:text-white cursor-pointer"></i>
+            <i class="fab fa-linkedin hover:text-white cursor-pointer"></i>
+            <i class="fab fa-youtube hover:text-white cursor-pointer"></i>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-sm mt-12 pt-8 border-t border-gray-800">
+        © 2026 Agro Sustentável - Todos os direitos reservados
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
