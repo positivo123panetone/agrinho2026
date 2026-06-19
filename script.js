@@ -1,192 +1,141 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agro Sustentável ✨ Futuro do Campo!</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Jua&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+// Banco de dados das perguntas do Quiz
+const quizData = [
+  {
+    question: "Qual é a estimativa da safra recorde brasileira citada no site? 🌾",
+    options: [
+      "150 milhões de toneladas",
+      "358 milhões de toneladas",
+      "500 milhões de toneladas",
+      "89 milhões de toneladas"
+    ],
+    correct: 1
+  },
+  {
+    question: "Qual dessas tecnologias é usada para evitar desperdícios monitorando de perto o campo? 🤖",
+    options: [
+      "Enxada Manual",
+      "Trator Antigo",
+      "Agricultura de Precisão",
+      "Combustão de Carvão"
+    ],
+    correct: 2
+  },
+  {
+    question: "Qual é o principal e maior desafio ecológico do agronegócio moderno? 🧠",
+    options: [
+      "Produzir mais alimentos com menos impacto ambiental",
+      "Comprar máquinas vindas de Marte",
+      "Aumentar o uso exagerado de água pura",
+      "Acabar totalmente com as fazendas familiares"
+    ],
+    correct: 0
+  }
+];
 
-  <header class="main-header">
-    <div class="header-container">
-      <div class="logo">
-        <i class="fas fa-leaf"></i>
-        <h1>Agro Sustentável 🌾</h1>
-      </div>
-      <nav class="nav-menu">
-        <a href="#producao">Produção</a>
-        <a href="#sustentabilidade">Ecologia</a>
-        <a href="#tecnologia">Tecnologia</a>
-        <a href="#quiz-section">Super Quiz!</a>
-      </nav>
-      <button class="btn-top">Saiba Mais! 🚀</button>
-    </div>
-  </header>
+// Elementos capturados do DOM
+const quizWrapper = document.getElementById('quiz-wrapper');
+const resultWrapper = document.getElementById('result-wrapper');
+const progressEl = document.getElementById('progress');
+const questionTextEl = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const nextBtn = document.getElementById('next-btn');
+const scoreTextEl = document.getElementById('score-text');
+const feedbackEmojiEl = document.getElementById('feedback-emoji');
+const restartBtn = document.getElementById('restart-btn');
 
-  <section class="hero-section">
-    <div class="hero-content">
-      <h2>Agro forte,<br>futuro sustentável! 🚜🌈</h2>
-      <p>Equilíbrio perfeito entre a nossa produção e a Mãe Natureza!</p>
-      <a href="#producao" class="btn-main">Conheça o Projeto! ✨</a>
-    </div>
-  </section>
+// Variáveis de Controle de Estado
+let currentQuestionIndex = 0;
+let score = 0;
+let hasAnswered = false;
 
-  <section class="intro-section">
-    <div class="container text-center">
-      <h2>O Agronegócio Brasileiro 🇧🇷</h2>
-      <p>Um dos principais pilares da economia brasileira, atuando como motor de desenvolvimento nacional e grande fornecedor global de alimentos!</p>
-      <div class="badge-stats">
-        ⭐ US$ 159,09 bilhões em exportações em 2022! ⭐
-      </div>
-    </div>
-  </section>
+// Inicializa o Quiz
+function startQuiz() {
+  currentQuestionIndex = 0;
+  score = 0;
+  hasAnswered = false;
+  resultWrapper.classList.add('hide');
+  quizWrapper.classList.remove('hide');
+  showQuestion();
+}
 
-  <section id="producao" class="producao-section">
-    <div class="container grid-2">
-      <div class="info-block">
-        <h3>Safra Recorde! 🌽</h3>
-        <p>Estimada em <span class="highlight">358 milhões de toneladas</span>, o agronegócio continua sendo o carro-chefe da nossa economia!</p>
-        <ul class="kid-list">
-          <li><i class="fas fa-check-circle"></i> Soja, milho e carnes são os campeões!</li>
-          <li><i class="fas fa-check-circle"></i> Forte presença da agricultura familiar!</li>
-          <li><i class="fas fa-check-circle"></i> Gerando muitos empregos pelo país!</li>
-        </ul>
-      </div>
-      <div class="image-block">
-        <img src="https://images.unsplash.com/photo-1592982537447-6f2a6a0c7c0f" alt="Campo de soja">
-      </div>
-    </div>
-  </section>
+// Renderiza a pergunta atual
+function showQuestion() {
+  hasAnswered = false;
+  nextBtn.classList.add('disabled');
+  nextBtn.disabled = true;
+  optionsContainer.innerHTML = ''; // Limpa botões antigos
 
-  <section id="sustentabilidade" class="sustentabilidade-section">
-    <div class="container">
-      <h2 class="section-title">Sustentabilidade no Campo ⚡🌱</h2>
-      <div class="grid-3">
-        <div class="kid-card card-blue">
-          <h3>Agricultura de Precisão 🤖</h3>
-          <p>Uso de super tecnologias para otimizar o manejo e sumir com os desperdícios!</p>
-        </div>
-        <div class="kid-card card-yellow">
-          <h3>Energia Renovável ☀️</h3>
-          <p>Produção de biodiesel e etanol como fontes de energia super limpas!</p>
-        </div>
-        <div class="kid-card card-pink">
-          <h3>Biotecnologia 🧬</h3>
-          <p>Bioinsumos artificiais protetores para maior produtividade sem derrubar matas!</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  const currentQuestion = quizData[currentQuestionIndex];
+  
+  // Atualiza contagem de progresso e texto
+  progressEl.innerText = `Pergunta ${currentQuestionIndex + 1} de ${quizData.length}`;
+  questionTextEl.innerText = currentQuestion.question;
 
-  <section class="desafios-section">
-    <div class="container grid-2">
-      <div>
-        <h3>Desafios Ambientais ⚠</h3>
-        <ul class="kid-list list-red">
-          <li><span>🎈</span> Pressões climáticas malucas e mudanças de chuvas;</li>
-          <li><span>🎈</span> Manejo esperto contra pragas chatas;</li>
-          <li><span>🎈</span> Evitar perdas no meio do caminho.</li>
-        </ul>
-      </div>
-      <div class="kid-quote">
-        <p>"O grande desafio é produzir muito mais com bem menos impacto ambiental! 🧠"</p>
-      </div>
-    </div>
-  </section>
+  // Cria os botões de alternativas
+  currentQuestion.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.innerText = option;
+    button.classList.add('option-btn');
+    button.addEventListener('click', () => selectOption(index, button));
+    optionsContainer.appendChild(button);
+  });
+}
 
-  <section id="tecnologia" class="soluções-section">
-    <div class="container">
-      <h2 class="section-title">Soluções e Futuro 🛸</h2>
-      <div class="grid-3 row-icons">
-        <div class="icon-box">
-          <i class="fas fa-robot"></i>
-          <h3>Máquinas Inteligentes</h3>
-        </div>
-        <div class="icon-box">
-          <i class="fas fa-seedling"></i>
-          <h3>Agro Regenerativo</h3>
-        </div>
-        <div class="icon-box">
-          <i class="fas fa-users"></i>
-          <h3>Super Assistência</h3>
-        </div>
-      </div>
-    </div>
-  </section>
+// Ação de clicar em uma alternativa
+function selectOption(selectedIndex, selectedButton) {
+  if (hasAnswered) return; // Evita clicar em múltiplos botões
+  hasAnswered = true;
 
-  <section class="curso-section">
-    <div class="container text-center">
-      <h2>Formação Profissional 🎒</h2>
-      <p class="subtitle">Curso Técnico em Agronegócio</p>
-      <p>Capacitar mentes brilhantes para um campo mais eficiente, consciente e mega sustentável.</p>
-      <button class="btn-rainbow">Conheça o Curso! 💥</button>
-    </div>
-  </section>
+  const currentQuestion = quizData[currentQuestionIndex];
+  const allButtons = optionsContainer.querySelectorAll('.option-btn');
 
-  <section id="quiz-section" class="quiz-container-section">
-    <div class="container">
-      <div class="quiz-box">
-        <div class="quiz-header">
-          <h2>🧠 Super Agro Quiz! 🧠</h2>
-          <p>Mostre que você aprendeu tudo sobre o campo sustentável!</p>
-        </div>
-        
-        <div id="quiz-wrapper">
-          <div class="quiz-progress" id="progress">Pergunta 1 de 3</div>
-          <h3 id="question-text" class="question-title">Carregando pergunta...</h3>
-          <div id="options-container" class="options-list">
-            </div>
-          <button id="next-btn" class="btn-main disabled" disabled>Próxima Pergunta ➔</button>
-        </div>
+  // Trava todos os botões após a resposta
+  allButtons.forEach(btn => btn.disabled = true);
 
-        <div id="result-wrapper" class="result-box hide">
-          <h3>🎉 Fim do Jogo! 🎉</h3>
-          <p id="score-text">Você acertou 0 de 3!</p>
-          <div id="feedback-emoji" style="font-size: 4rem; margin: 15px 0;">🌈</div>
-          <button id="restart-btn" class="btn-rainbow">Jogar de Novo! 🔄</button>
-        </div>
-      </div>
-    </div>
-  </section>
+  // Validação se acertou ou errou
+  if (selectedIndex === currentQuestion.correct) {
+    selectedButton.classList.add('correct');
+    score++;
+  } else {
+    selectedButton.classList.add('wrong');
+    // Mostra visualmente onde estava a resposta certa
+    allButtons[currentQuestion.correct].classList.add('correct');
+  }
 
-  <footer class="main-footer">
-    <div class="container grid-4">
-      <div>
-        <h4>Agro Sustentável 🍃</h4>
-        <p>Equilíbrio perfeito entre produção e preservação!</p>
-      </div>
-      <div>
-        <h5>Links Úteis</h5>
-        <ul class="footer-links">
-          <li><a href="#producao">Produção</a></li>
-          <li><a href="#sustentabilidade">Sustentabilidade</a></li>
-          <li><a href="#tecnologia">Tecnologias</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Contato</h5>
-        <p>📍 Curitiba, Paraná</p>
-        <p>✉ agro.sustentavel@email.com</p>
-      </div>
-      <div>
-        <h5>Redes Sociais</h5>
-        <div class="social-icons">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-linkedin"></i>
-          <i class="fab fa-youtube"></i>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2026 Agro Sustentável - Feito com 💖 e estilo Kidcore!
-    </div>
-  </footer>
+  // Desbloqueia o botão de avançar
+  nextBtn.classList.remove('disabled');
+  nextBtn.disabled = false;
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+// Controla o avanço das telas
+nextBtn.addEventListener('click', () => {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < quizData.length) {
+    showQuestion();
+  } else {
+    showResults();
+  }
+});
+
+// Exibe a tela final com pontuação customizada Kidcore
+function showResults() {
+  quizWrapper.classList.add('hide');
+  resultWrapper.classList.remove('hide');
+
+  scoreTextEl.innerText = `Você acertou ${score} de ${quizData.length} perguntas!`;
+
+  // Emojis customizados com base no rendimento
+  if (score === quizData.length) {
+    feedbackEmojiEl.innerText = "🌈 Perfeito! Você é um mestre supremo do Agro! ✨🏆";
+  } else if (score >= 1) {
+    feedbackEmojiEl.innerText = "🎈 Muito bem! Quase lá! Te vejo no campo! 💫🚜";
+  } else {
+    feedbackEmojiEl.innerText = "🍃 Ops! Vale a pena reler a página e tentar de novo! 🧩";
+  }
+}
+
+// Botão de reinício
+restartBtn.addEventListener('click', startQuiz);
+
+// Inicia automaticamente o script ao abrir a página
+startQuiz();
