@@ -1,141 +1,159 @@
-// Banco de dados das perguntas do Quiz
+// script.js – Quiz interativo com pegada woke + Y2K
 const quizData = [
   {
-    question: "Qual é a estimativa da safra recorde brasileira citada no site? 🌾",
-    options: [
-      "150 milhões de toneladas",
-      "358 milhões de toneladas",
-      "500 milhões de toneladas",
-      "89 milhões de toneladas"
-    ],
-    correct: 1
+    question: "🌍 Qual prática agroecológica sequestra mais carbono no solo?",
+    options: ["Plantio direto", "Agrofloresta", "Uso de fertilizantes sintéticos", "Queima controlada"],
+    answer: 1
   },
   {
-    question: "Qual dessas tecnologias é usada para evitar desperdícios monitorando de perto o campo? 🤖",
-    options: [
-      "Enxada Manual",
-      "Trator Antigo",
-      "Agricultura de Precisão",
-      "Combustão de Carvão"
-    ],
-    correct: 2
+    question: "💚 O que é 'economia circular' no agronegócio?",
+    options: ["Descartar resíduos em aterros", "Reutilizar resíduos como insumos", "Exportar matéria-prima bruta", "Monocultura extensiva"],
+    answer: 1
   },
   {
-    question: "Qual é o principal e maior desafio ecológico do agronegócio moderno? 🧠",
-    options: [
-      "Produzir mais alimentos com menos impacto ambiental",
-      "Comprar máquinas vindas de Marte",
-      "Aumentar o uso exagerado de água pura",
-      "Acabar totalmente com as fazendas familiares"
-    ],
-    correct: 0
+    question: "🌱 Qual dessas é uma fonte renovável de nutrientes para o solo?",
+    options: ["Adubo químico NPK", "Compostagem e biofertilizantes", "Uso de agrotóxicos", "Queima de palhada"],
+    answer: 1
+  },
+  {
+    question: "💧 Qual técnica ajuda a preservar a água no campo?",
+    options: ["Irrigação por aspersão intensiva", "Captação de água da chuva", "Drenagem de áreas úmidas", "Uso de canais de concreto"],
+    answer: 1
+  },
+  {
+    question: "✊ Por que a agroecologia é considerada uma 'revolução woke'?",
+    options: ["Porque usa tecnologia de ponta", "Porque valoriza saberes tradicionais e justiça ambiental", "Porque foca em exportação", "Porque ignora comunidades locais"],
+    answer: 1
   }
 ];
 
-// Elementos capturados do DOM
-const quizWrapper = document.getElementById('quiz-wrapper');
-const resultWrapper = document.getElementById('result-wrapper');
-const progressEl = document.getElementById('progress');
-const questionTextEl = document.getElementById('question-text');
-const optionsContainer = document.getElementById('options-container');
-const nextBtn = document.getElementById('next-btn');
-const scoreTextEl = document.getElementById('score-text');
-const feedbackEmojiEl = document.getElementById('feedback-emoji');
-const restartBtn = document.getElementById('restart-btn');
-
-// Variáveis de Controle de Estado
 let currentQuestionIndex = 0;
 let score = 0;
-let hasAnswered = false;
+let selectedOptionIndex = null;
+let isAnswered = false;
+let userAnswers = [];
 
-// Inicializa o Quiz
-function startQuiz() {
-  currentQuestionIndex = 0;
-  score = 0;
-  hasAnswered = false;
-  resultWrapper.classList.add('hide');
-  quizWrapper.classList.remove('hide');
-  showQuestion();
-}
+const questionEl = document.getElementById('question');
+const optionsContainer = document.getElementById('options');
+const resultBox = document.getElementById('result');
+const nextBtn = document.getElementById('next-btn');
 
-// Renderiza a pergunta atual
-function showQuestion() {
-  hasAnswered = false;
-  nextBtn.classList.add('disabled');
+function loadQuestion() {
+  // reset do estado da pergunta
+  isAnswered = false;
+  selectedOptionIndex = null;
+  resultBox.innerHTML = '';
   nextBtn.disabled = true;
-  optionsContainer.innerHTML = ''; // Limpa botões antigos
 
-  const currentQuestion = quizData[currentQuestionIndex];
-  
-  // Atualiza contagem de progresso e texto
-  progressEl.innerText = `Pergunta ${currentQuestionIndex + 1} de ${quizData.length}`;
-  questionTextEl.innerText = currentQuestion.question;
+  const currentQ = quizData[currentQuestionIndex];
+  questionEl.textContent = currentQ.question;
 
-  // Cria os botões de alternativas
-  currentQuestion.options.forEach((option, index) => {
-    const button = document.createElement('button');
-    button.innerText = option;
-    button.classList.add('option-btn');
-    button.addEventListener('click', () => selectOption(index, button));
-    optionsContainer.appendChild(button);
+  // limpar opções
+  optionsContainer.innerHTML = '';
+
+  // criar botões
+  currentQ.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
+    btn.dataset.index = idx;
+    btn.addEventListener('click', () => selectOption(idx));
+    optionsContainer.appendChild(btn);
   });
+
+  // exibe progresso
+  const progress = document.createElement('div');
+  progress.style.marginTop = '0.8rem';
+  progress.style.fontSize = '0.9rem';
+  progress.style.fontWeight = '600';
+  progress.style.opacity = '0.7';
+  progress.textContent = `Pergunta ${currentQuestionIndex + 1} de ${quizData.length}`;
+  optionsContainer.appendChild(progress);
+
+  // se for a última pergunta, mudar texto do botão
+  if (currentQuestionIndex === quizData.length - 1) {
+    nextBtn.textContent = '✨ ver resultado final ✨';
+  } else {
+    nextBtn.textContent = 'próxima questão →';
+  }
 }
 
-// Ação de clicar em uma alternativa
-function selectOption(selectedIndex, selectedButton) {
-  if (hasAnswered) return; // Evita clicar em múltiplos botões
-  hasAnswered = true;
+function selectOption(index) {
+  if (isAnswered) return; // já respondeu
 
-  const currentQuestion = quizData[currentQuestionIndex];
-  const allButtons = optionsContainer.querySelectorAll('.option-btn');
+  const optionsBtns = document.querySelectorAll('.option-btn');
+  // remove seleção anterior
+  optionsBtns.forEach(btn => btn.classList.remove('selected'));
 
-  // Trava todos os botões após a resposta
-  allButtons.forEach(btn => btn.disabled = true);
-
-  // Validação se acertou ou errou
-  if (selectedIndex === currentQuestion.correct) {
-    selectedButton.classList.add('correct');
-    score++;
-  } else {
-    selectedButton.classList.add('wrong');
-    // Mostra visualmente onde estava a resposta certa
-    allButtons[currentQuestion.correct].classList.add('correct');
-  }
-
-  // Desbloqueia o botão de avançar
-  nextBtn.classList.remove('disabled');
+  // marca a opção
+  optionsBtns[index].classList.add('selected');
+  selectedOptionIndex = index;
+  // habilita o botão next
   nextBtn.disabled = false;
 }
 
-// Controla o avanço das telas
-nextBtn.addEventListener('click', () => {
+function handleNext() {
+  if (selectedOptionIndex === null) return;
+
+  const currentQ = quizData[currentQuestionIndex];
+  const isCorrect = selectedOptionIndex === currentQ.answer;
+  if (isCorrect) score++;
+
+  // guarda resposta do usuário
+  userAnswers.push({
+    question: currentQ.question,
+    selected: selectedOptionIndex,
+    correct: currentQ.answer,
+    isCorrect: isCorrect
+  });
+
+  // mostra feedback na pergunta atual
+  isAnswered = true;
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach((btn, idx) => {
+    btn.classList.remove('selected');
+    if (idx === currentQ.answer) {
+      btn.classList.add('correct-answer');
+    } else if (idx === selectedOptionIndex && idx !== currentQ.answer) {
+      btn.classList.add('wrong-answer');
+    }
+    btn.style.pointerEvents = 'none'; // bloqueia clique
+  });
+
+  // exibe resultado parcial ou final
+  if (currentQuestionIndex === quizData.length - 1) {
+    // fim do quiz
+    let message = '';
+    if (score === quizData.length) message = '🌿 AgroWoke total! Você é um agente de transformação! ✊';
+    else if (score >= 3) message = '🌱 Bom caminho! Continue se aprofundando na agroecologia.';
+    else message = '📚 Hora de estudar mais! A sustentabilidade começa com conhecimento.';
+    resultBox.innerHTML = `<span style="font-size:1.8rem;">✨</span> Você acertou ${score} de ${quizData.length} <br> ${message}`;
+    nextBtn.disabled = true;
+    nextBtn.textContent = '🏁 quiz concluído';
+    // mostra um resumo no result
+    let detail = '<div style="font-size:0.9rem; margin-top: 0.6rem; text-align:left;">';
+    userAnswers.forEach((item, i) => {
+      const correctOpt = quizData[i].options[item.correct];
+      const userOpt = quizData[i].options[item.selected];
+      const icon = item.isCorrect ? '✅' : '❌';
+      detail += `<div>${icon} ${quizData[i].question.substring(0, 30)}... <br> <span style="opacity:0.7;">sua: ${userOpt} | correta: ${correctOpt}</span></div>`;
+    });
+    detail += '</div>';
+    resultBox.innerHTML += detail;
+    // desabilita botão
+    return;
+  }
+
+  // vai para próxima questão
   currentQuestionIndex++;
-  if (currentQuestionIndex < quizData.length) {
-    showQuestion();
-  } else {
-    showResults();
-  }
-});
-
-// Exibe a tela final com pontuação customizada Kidcore
-function showResults() {
-  quizWrapper.classList.add('hide');
-  resultWrapper.classList.remove('hide');
-
-  scoreTextEl.innerText = `Você acertou ${score} de ${quizData.length} perguntas!`;
-
-  // Emojis customizados com base no rendimento
-  if (score === quizData.length) {
-    feedbackEmojiEl.innerText = "🌈 Perfeito! Você é um mestre supremo do Agro! ✨🏆";
-  } else if (score >= 1) {
-    feedbackEmojiEl.innerText = "🎈 Muito bem! Quase lá! Te vejo no campo! 💫🚜";
-  } else {
-    feedbackEmojiEl.innerText = "🍃 Ops! Vale a pena reler a página e tentar de novo! 🧩";
-  }
+  loadQuestion();
 }
 
-// Botão de reinício
-restartBtn.addEventListener('click', startQuiz);
+// evento do botão
+nextBtn.addEventListener('click', handleNext);
 
-// Inicia automaticamente o script ao abrir a página
-startQuiz();
+// carrega primeira pergunta
+loadQuestion();
+
+// reiniciar o quiz (caso queira, mas sem botão de reset explícito – apenas recarregar)
+console.log('🌱 AgroWoke quiz carregado com sucesso!');
